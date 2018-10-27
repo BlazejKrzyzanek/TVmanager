@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "TvObject.h"
 
-TvObject::TvObject(string t, int r, int len) {
+TvObject::TvObject(int i, string t, int r, int yr) {
+	id = i;
 	title = t;
 	rating = r;
-	length = len;
+	year = yr;
 }
 
 void TvObject::setTitle(string t) {
@@ -15,12 +16,12 @@ string TvObject::getTitle() {
 	return title;
 }
 
-void TvObject::setLength(int len) {
-	length = len;
+void TvObject::setYear(int yr) {
+	year = yr;
 }
 
-int TvObject::getLength() {
-	return length;
+int TvObject::getYear() {
+	return year;
 }
 
 void TvObject::setRating(int r) {
@@ -29,4 +30,12 @@ void TvObject::setRating(int r) {
 
 int TvObject::getRating() {
 	return rating;
+}
+
+void TvObject::setId(int i) {
+	id = i;
+}
+
+int TvObject::getId() {
+	return id;
 }

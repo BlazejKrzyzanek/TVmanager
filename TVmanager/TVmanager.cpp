@@ -12,32 +12,25 @@
 
 int main()
 {
-	vector<string> buttons;
-	buttons.push_back("(A) DODAJ");
-	buttons.push_back("(D) USUN");
-	buttons.push_back("(E) EDYTUJ");
-	buttons.push_back("(S) WYSWIETL STATYSTYKI");
-	buttons.push_back("(R) REKOMENDACJE");
-	buttons.push_back("(K) WYJDZ Z PROGRAMU");
-	MainMenu menu(buttons);
-
-	TvObject film1("teletubisie na wojnie", 5, 50);
-	TvObject film2("terminator 45", 3, 123);
-	TvObject film3("superman 6", 1, 332);
-
 	TvCollection<TvObject> movies;
-	movies.add_object(film1);
-	movies.add_object(film2);
-	movies.add_object(film3);
+	movies.read_file("movies.txt");
 
-	movies.remove_object("terminator 45");
-	movies.display_all();
+	MainMenu menu("TV MANAGER", &movies);
+	menu.add_button("(A) DODAJ");
+	menu.add_button("(D) USUN");
+	menu.add_button("(E) EDYTUJ");
+	menu.add_button("(W) WSZYSTKIE");
+	menu.add_button("(S) STATYSTYKI");
+	menu.add_button("(R) REKOMENDACJE");
+	menu.add_button("(K) WYJDZ Z PROGRAMU");
 
 	// Main loop
-	int state = true;
+	bool state = true;
 	while (state)
 	{
 		state = menu.display();
+		movies.save("movies.txt");
+		cout << "\nPliki sa aktualne\n";
 	} 
     return 0;
 }

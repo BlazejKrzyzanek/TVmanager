@@ -7,14 +7,17 @@ using namespace std;
 class TvObject {
 protected:
 	string title;
-	int length;
+	int id;
+	int year;
 	int rating;
 public:
-	TvObject(string title, int rating, int length);
+	TvObject(int id, string title, int rating, int year);
+	void setId(int id);
+	int getId();
 	void setTitle(string title);
 	string getTitle();
-	void setLength(int length);
-	int getLength();
+	void setYear(int year);
+	int getYear();
 	void setRating(int rating);
 	int getRating();
 };
