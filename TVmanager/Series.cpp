@@ -1,15 +1,15 @@
 #include "stdafx.h"
-#include "Movie.h"
+#include "Series.h"
 
-void Movie::setImdbRank(int r) {
-	this->imdbRank = r;
+void Series::setEpisodes(int e) {
+	this->episodes = e;
 }
 
-int Movie::getImdbRank() {
-	return this->imdbRank;
+int Series::getEpisodes() {
+	return this->episodes;
 }
 
-string Movie::tvToString() {
+string Series::tvToString() {
 	string text;
 	text.append(to_string(this->getId()));
 	text.append("\t");
@@ -19,17 +19,17 @@ string Movie::tvToString() {
 	text.append("\t");
 	text.append(to_string(this->getFavourite() ? 1 : 0)); // NEED checking
 	text.append("\t");
-	text.append(to_string(this->getImdbRank()));
+	text.append(to_string(this->getEpisodes()));
 	text.append("\n");
 	return text;
 }
 
-vector<string> Movie::showFields() {
+vector<string> Series::showFields() {
 	vector<string> data;
 	data.push_back(to_string(this->getId()));
 	data.push_back(this->getTitle());
 	data.push_back(to_string(this->getRating()));
 	data.push_back(this->getFavourite() ? "tak" : "nie");
-	data.push_back(to_string(this->getImdbRank()));
+	data.push_back(to_string(this->getEpisodes()));
 	return data;
 }

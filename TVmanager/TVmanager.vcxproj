@@ -147,16 +147,21 @@
     <Text Include="tvObjects.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="days.h" />
+    <ClInclude Include="Live.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Movie.h" />
+    <ClInclude Include="Series.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TvCollection.h" />
     <ClInclude Include="TvObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Live.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Movie.cpp" />
+    <ClCompile Include="Series.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

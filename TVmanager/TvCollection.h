@@ -14,8 +14,10 @@ class TvCollection {
 private:
 	vector<T> tvObjects;
 	int maxId = 0;
+	string filename;
 public:
-	int read_file(string filename) {
+	virtual int read_file(string filename) {
+		this->filename = filename;
 		ifstream file;
 		try {
 			file.open(filename);
@@ -26,46 +28,33 @@ public:
 		}
 		string line;
 		while (getline(file, line)) {
-			int maxId = 0;
 			vector<string> tokens;
 			istringstream iss(line);
 			string token;
 			while (getline(iss, token, '\t')) {
 				tokens.push_back(token);
 			}
-			int tokens_length = tokens.size();
-			switch (tokens_length)
-			{
-			case 4: {
-				int tmpId = stoi(tokens[0]);
-				T tmp(tmpId, tokens[1], stoi(tokens[2]), stoi(tokens[3]));
-				if (tmpId > maxId) {
-					maxId = tmpId;
-				}
-				tvObjects.push_back(tmp);
-				break;
-			}
-			case 5: {
-				// T tmp(tokens[0], stoi(tokens[1]), stoi(tokens[2]), stoi(tokens[3]));
-				// tvObjects.push_back(tmp);
-				break;
-			}
-			default:
-				return 1;
-				break;
+
+			//  MOVIE: int id, string title, int rating, bool favourite, int imdbRank
+			// SERIES: int id, string title, int rating, bool favourite, int episodes
+			//	 LIVE: int id, string title, bool favourite, int day, int hour;
+			int tmpId = stoi(tokens[0]);
+			T tmp(tmpId, tokens[1], stoi(tokens[2]), stoi(tokens[3]), stoi(tokens[4]));
+			this->tvObjects.push_back(tmp);
+			if (tmpId >= this->maxId) {
+				this->maxId = tmpId + 1;
 			}
 
 		}
 		file.close();
 		return 0;
 	}
-
-	int save(string filename) {
+	int save() {
 		ofstream file;
 		try {
-			file.open(filename, ios::in | ios::trunc);
-			for (int i = 0; i < tvObjects.size(); i++) {
-				file << tvObjects[i].getId() << "\t" << tvObjects[i].getTitle() << "\t" << tvObjects[i].getRating() << "\t" << tvObjects[i].getYear() << "\n";
+			file.open(this->filename, ios::in | ios::trunc);
+			for (int i = 0; i < this->tvObjects.size(); i++) {
+				file << this->tvObjects[i].tvToString();
 			}
 		}
 		catch (...) {
@@ -73,7 +62,6 @@ public:
 			return 1;
 		}
 		return 0;
-
 	}
 	void add_object(T obj) { 
 		obj.setId(maxId++);
@@ -82,7 +70,6 @@ public:
 	int remove_object(int id) {
 		for (int i = 0; i < tvObjects.size(); i++) {
 			if (id == tvObjects[i].getId()) {
-				// movies with the same title!?
 				tvObjects.erase(tvObjects.begin() + i);
 				return 0;
 			}
@@ -90,20 +77,31 @@ public:
 		}
 		return 1;
 	}
-	void show_all() {
-		cout << setw(6) << "| ID |";
-		cout << setw(35) << "| TYTUL |";
-		cout << setw(15) << "| OCENA |";
-		cout << setw(15) << "| ROK |";
-		cout << "\n";
+	void show_all(vector<int> textFields) {
 		for (int i = 0; i < tvObjects.size(); i++) {
-			cout << setw(6) << tvObjects[i].getId();
-			cout << setw(35) << tvObjects[i].getTitle();
-			cout << setw(15) << tvObjects[i].getRating();
-			cout << setw(15) << tvObjects[i].getYear();
+			vector<string> data = tvObjects[i].showFields();
+			for (int j = 0; j < textFields.size(); j++) {
+				cout << setw(textFields[j]) << data[j];
+			}
 			cout << "\n";
 		}
 	}
-
+	bool not_exist(int id) {
+		for (int i = 0; i < tvObjects.size(); i++) {
+			if (id == tvObjects[i].getId())
+				return 0;
+			else continue;
+		}
+		return 1;
+	}
+	void edit_object(T obj) {
+		int id = obj.getId();
+		for (int i = 0; i < tvObjects.size(); i++) {
+			if (id == tvObjects[i].getId()) {
+				tvObjects.at(i) = obj;
+			}
+			else continue;
+		}
+	}
 };
 #endif // !TvCollection_h

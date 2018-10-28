@@ -1,0 +1,6 @@
+4	majnkampf	1	0	22
+5	supeeeer	0	1	23
+6	asd	1	2	3
+7	fgrs	0	3	3
+8	minekraft	1	6	0
+9	zelda	1	1	12
