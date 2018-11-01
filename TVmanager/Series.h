@@ -1,6 +1,8 @@
 #ifndef Series_h
 #define Series_h
-#include "TvObject.h"
+#include <string>
+#include <vector>
+using namespace std;
 
 class Series : public TvObject {
 private:

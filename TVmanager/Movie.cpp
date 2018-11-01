@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "TvObject.h"
 #include "Movie.h"
 
 void Movie::setImdbRank(int r) {

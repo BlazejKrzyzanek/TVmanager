@@ -1,5 +1,7 @@
 #include "stdafx.h"
+#include "TvObject.h"
 #include "Series.h"
+#include "Visual.h"
 
 void Series::setEpisodes(int e) {
 	this->episodes = e;

@@ -156,6 +156,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TvCollection.h" />
     <ClInclude Include="TvObject.h" />
+    <ClInclude Include="Visual.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Live.cpp" />
@@ -170,6 +171,7 @@
     </ClCompile>
     <ClCompile Include="TVmanager.cpp" />
     <ClCompile Include="TvObject.cpp" />
+    <ClCompile Include="Visual.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

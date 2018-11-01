@@ -1,7 +1,8 @@
 #ifndef Live_h
 #define Live_h
-#include "TvObject.h"
-#include "days.h"
+#include <string>
+#include <vector>
+using namespace std;
 
 class Live : public TvObject {
 private:

@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "TvObject.h"
+#include "Visual.h"
+#include "MainMenu.h"
+
 
 TvObject::TvObject(int id, string title) {
 	TvObject(id, title, false);

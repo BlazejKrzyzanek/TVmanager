@@ -1,7 +1,8 @@
 #ifndef Movie_h
 #define Movie_h
-
-#include "TvObject.h"
+#include <string>
+#include <vector>
+using namespace std;
 
 class Movie : public TvObject {
 private:

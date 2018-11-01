@@ -1,5 +1,7 @@
 #include "stdafx.h"
+#include "TvObject.h"
 #include "Live.h"
+#include "days.h"
 
 
 void Live::setDay(int day) {

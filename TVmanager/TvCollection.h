@@ -16,7 +16,7 @@ private:
 	int maxId = 0;
 	string filename;
 public:
-	virtual int read_file(string filename) {
+	int read_file(string filename) {
 		this->filename = filename;
 		ifstream file;
 		try {
@@ -39,6 +39,7 @@ public:
 			// SERIES: int id, string title, int rating, bool favourite, int episodes
 			//	 LIVE: int id, string title, bool favourite, int day, int hour;
 			int tmpId = stoi(tokens[0]);
+
 			T tmp(tmpId, tokens[1], stoi(tokens[2]), stoi(tokens[3]), stoi(tokens[4]));
 			this->tvObjects.push_back(tmp);
 			if (tmpId >= this->maxId) {
@@ -67,15 +68,15 @@ public:
 		obj.setId(maxId++);
 		tvObjects.push_back(obj); 
 	}
-	int remove_object(int id) {
+	bool remove_object(int id) {
 		for (int i = 0; i < tvObjects.size(); i++) {
 			if (id == tvObjects[i].getId()) {
 				tvObjects.erase(tvObjects.begin() + i);
-				return 0;
+				return true;
 			}
 			else continue;
 		}
-		return 1;
+		return false;
 	}
 	void show_all(vector<int> textFields) {
 		for (int i = 0; i < tvObjects.size(); i++) {
@@ -86,13 +87,13 @@ public:
 			cout << "\n";
 		}
 	}
-	bool not_exist(int id) {
+	bool exist(int id) {
 		for (int i = 0; i < tvObjects.size(); i++) {
 			if (id == tvObjects[i].getId())
-				return 0;
+				return true;
 			else continue;
 		}
-		return 1;
+		return false;
 	}
 	void edit_object(T obj) {
 		int id = obj.getId();
