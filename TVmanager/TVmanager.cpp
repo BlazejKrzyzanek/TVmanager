@@ -21,9 +21,8 @@ int main()
 	movies.read_file("movies.txt");
 	tvSeries.read_file("tvSeries.txt");
 	lives.read_file("lives.txt");
-	TvCollection<TvObject> tvObjects;
 
-	MainMenu menu("TV MANAGER", &movies, &tvSeries, &lives, &tvObjects);
+	MainMenu menu("TV MANAGER", &movies, &tvSeries, &lives);
 	menu.add_button("(A) DODAJ");
 	menu.add_button("(D) USUN");
 	menu.add_button("(E) EDYTUJ");

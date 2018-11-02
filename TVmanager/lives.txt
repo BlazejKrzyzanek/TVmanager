@@ -1,5 +1,9 @@
 4	majnkampf	1	0	22
-6	asd	1	2	3
+6	bdfg	0	2	21
 7	fgrs	0	3	3
 8	minekraft	1	6	0
-9	3j	0	7	12
+9	hjmru	1	4	5
+10	llkkkkkkk kkkkkkkkdsf das	0	1	15
+11	transmisja	0	7	22
+12	ty45	0	3	6
+13	rwg	1	7	6

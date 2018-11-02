@@ -10,6 +10,7 @@ public:
 	static void question(string question); 
 	static bool yesOrNot(string question);
 	static char readChar();
+	static int readInt(string question);
 };
 
 #endif // !Visual_h

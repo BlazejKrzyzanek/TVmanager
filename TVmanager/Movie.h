@@ -8,6 +8,7 @@ class Movie : public TvObject {
 private:
 	int imdbRank;
 public:
+	Movie() {};
 	Movie(int id, string title, int rating, bool favourite, int imdbRank) : TvObject(id, title, rating, favourite) { this->imdbRank = imdbRank; };
 	void setImdbRank(int rank);
 	int getImdbRank();

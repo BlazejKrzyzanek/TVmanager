@@ -1,6 +1,5 @@
-6	dsa	2	0	23
-10	rter	5	1	4
-13	adsfadsf	2	1	33
+6	dddddddddddddddddd	4	1	32
+13	dfs	2	0	222
 14	trolololo	3	1	32
 15	super nowoczesny serial	4	0	4
 16	qwer	2	1	120
@@ -10,10 +9,14 @@
 20	23	2	0	312
 22	ret	5	1	123
 24	3	4	0	345
-25	123	5	0	123
 26	312	3	0	23
-27		2	0	21212
 29	2	3	0	12312
-30		3	0	33333
-31		3	0	2
-32	gh	5	0	555
+35	ewqrewrer	2	0	1212
+38	qwert	1	0	4
+39	nowy tytul serialu	4	1	1
+41	edytowalem ten serial wlasnie	10	0	233333
+42	testowy serial ktory teraz dodalem	10	1	120
+43	nowy serial adsfdsf	1	0	123213
+44	to jest nowy serial trolololool	7	0	120
+46	ads	2	0	2
+47	asdsad	3	0	132

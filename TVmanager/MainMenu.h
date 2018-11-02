@@ -21,11 +21,10 @@ private:
 	TvCollection<Movie>* movies;
 	TvCollection<Series>* tvSeries;
 	TvCollection<Live>* lives;
-	TvCollection<TvObject>* tvObjects;
 	string title;
 	vector<string> buttons;
 public:
-	MainMenu(const string title, TvCollection<Movie>* movies, TvCollection<Series>* tvSeries, TvCollection<Live>* lives, TvCollection<TvObject>* tvObjects);
+	MainMenu(const string title, TvCollection<Movie>* movies, TvCollection<Series>* tvSeries, TvCollection<Live>* lives);
 	virtual void add_button(string button_name);
 	virtual bool display();
 private:
@@ -44,12 +43,6 @@ private:
 	void editSeries();
 	void editMovie();
 	void editLive();
-
-	template <class T>
-	T createTvObject(int id) {
-		
-	};
-
 	template <class T> 
 	void removeTvObject(string objName, TvCollection<T>* tvCollection) {
 		int id;
@@ -72,7 +65,7 @@ private:
 			if (toupper(choice[0]) == 'Q') return;
 			try {
 				id = stoi(choice);
-				doLoop = !(tvCollection->remove_object(id));
+				doLoop = !(tvCollection->exist(id));
 			}
 			catch (...) {
 				doLoop = true;
@@ -81,41 +74,7 @@ private:
 				cout << "Taki " << objName << " nie istnieje w twojej kolekcji!\n";
 			}
 		}
+		*tvCollection -= tvCollection->findObject(id);
 	};
-
-	template <class T>
-	void editTvObject(string objName, TvCollection<T>* tvCollection) {
-		int id;
-		string choice;
-		bool doLoop = true;
-		if (typeid(T) == typeid(Series)) {
-			this->showTvSeries();
-		}
-		else if (typeid(T) == typeid(Movie)) {
-			this->showMovies();
-		}
-		else {
-			this->showLives();
-		}
-		while (doLoop) {
-			cout << "\nKtory "<<objName<<" chcesz edytowac? Podaj nr ID, (Q) aby anulowac: ";
-			getline(cin, choice);
-			if (toupper(choice[0]) == 'Q') return;
-			try {
-				id = stoi(choice);
-				doLoop = !(tvCollection->exist(id));
-			}
-			catch (...) {
-				doLoop = true;
-			}
-			if (doLoop) {
-				cout << "Taki "<<objName<<" nie istnieje w twojej kolekcji!\n";
-			}
-			T tmp = this->createTvObject(id);
-			tvCollection->edit_object(tmp);
-			tvCollection->save();
-		}
-	};
-
 };
 #endif // !MainMenu_h

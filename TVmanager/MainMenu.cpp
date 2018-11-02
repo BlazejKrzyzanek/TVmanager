@@ -3,12 +3,11 @@
 #define line "___________________________________________________________________________________________________"
 #define space "                                       "
 
-MainMenu::MainMenu(string title, TvCollection<Movie>* movies, TvCollection<Series>* tvSeries, TvCollection<Live>* lives, TvCollection<TvObject>* TvObjects) {
+MainMenu::MainMenu(string title, TvCollection<Movie>* movies, TvCollection<Series>* tvSeries, TvCollection<Live>* lives) {
 	this->title = title;
 	this->movies = movies;
 	this->tvSeries = tvSeries;
 	this->lives = lives;
-	this->tvObjects = TvObjects;
 }
 
 void MainMenu::add_button(string b) {
@@ -35,31 +34,26 @@ bool MainMenu::display() {
 	}
 	case 'D':
 	{
-		Visual::header("USUWANIE DZIELA KINEMATOGRAFII");
 		this->delete_tv();
 		break;
 	}
 	case 'E':
 	{
-		Visual::header("EDYCJA DZIELA KINEMATOGRAFII");
 		this->edit_tv();
 		break;
 	}
 	case 'S':
 	{
-		Visual::header("STATYSTYKI");
 		this->statistics();
 		break;
 	}
 	case 'R':
 	{
-		Visual::header("REKOMENDACJE");
 		this->recommended();
 		break;
 	}
 	case 'W':
 	{
-		Visual::header("WYSWIETL WSZYSTKO");
 		this->show_all();
 		break;
 	}
@@ -86,21 +80,21 @@ void MainMenu::add_tv(){
 		switch (choice) {
 		case 'S': {
 			while (state){
-				this->tvSeries->add_object(createSeries(0));
+				*this->tvSeries += createSeries(0);
 				state = Visual::yesOrNot("\nCzy chcesz dodac kolejny serial? y/n: ");
 			}
 			break;
 		}
 		case 'M': {
 			while(state){
-				this->movies->add_object(createMovie(0));
+				*this->movies+=createMovie(0);
 				state = Visual::yesOrNot("\nCzy chcesz dodac kolejny film? y/n: ");
 			}
 			break;
 		}
 		case 'L': {
 			do {
-				this->lives->add_object(createLive(0));
+				*this->lives+=createLive(0);
 				state = Visual::yesOrNot("\nCzy chcesz dodac kolejna transmisje? y/n: ");
 			} while (state);
 			break;
@@ -170,6 +164,7 @@ void MainMenu::edit_tv() {
 		switch (choice) {
 		case 'S': {
 			while(state){
+				tvSeries->sortCollection('I');
 				this->editSeries();
 				state = Visual::yesOrNot("\nCzy chcesz edytowac kolejny serial? y/n: ");
 			}
@@ -177,6 +172,7 @@ void MainMenu::edit_tv() {
 		}
 		case 'M': {
 			while (state) {
+				movies->sortCollection('I');
 				this->editMovie();
 				state = Visual::yesOrNot("\nCzy chcesz edytowac kolejny film? y/n: ");
 			}
@@ -184,6 +180,7 @@ void MainMenu::edit_tv() {
 		}
 		case 'L': {
 			while (state) {
+				movies->sortCollection('I');
 				this->editLive();
 				state = Visual::yesOrNot("\nCzy chcesz edytowac kolejny live? y/n: ");
 			}
@@ -200,7 +197,17 @@ void MainMenu::edit_tv() {
 }
 
 void MainMenu::statistics() {
-	cout << "statystyki" << "\n";
+	Visual::header("STATYSTYKI");
+	int a, b, c;
+	a = tvSeries->getLength();
+	b = movies->getLength();
+	c = lives->getLength();
+	cout << "Wszystkich seriali: " << a << "\n";
+	cout << "Wszystkich filmow: " << b << "\n";
+	cout << "Wszystkich live: " << c << "\n";
+	cout << "Lacznie: " << a + b + c << "\n";
+	cout << "Dowolny klawisz aby kontynuowac... ";
+	_getch();
 }
 
 void MainMenu::recommended() {
@@ -208,28 +215,88 @@ void MainMenu::recommended() {
 }
 
 void MainMenu::show_all() {
+	Visual::header("WYSWIETL WSZTYSTKO");
 	Visual::question("Co chcesz wyswietlic?, (Q) aby anulowac: \n");
-	char choice = Visual::readChar();
-	cout << "CHAR: " << choice;
-	if (choice == 'Q') return;
-	switch (choice){
-	case 'S': {
-		this->showTvSeries();
-		break;
+	bool doLoop = true;
+	while (doLoop) {
+		char choice = Visual::readChar();
+		switch (choice) {
+		case 'S': {
+			bool doMainLoop = true;
+			bool doSecondLoop = true;
+			char key = 'I';
+			while (doMainLoop) {
+				tvSeries->sortCollection(key);
+				this->showTvSeries();
+				doSecondLoop = true;
+				cout << "Wybierz sposob sortowania:\n(I) Id\n(R) Ocena\n(Q) Wyjscie\n\nWYBOR: ";
+				while (doSecondLoop) {
+					key = Visual::readChar();
+					if (key == 'Q') return;
+					else if (key == 'R' || key == 'I')
+						doSecondLoop = false;
+					else {
+						doSecondLoop = true;
+						cout << "Bledna komenda, sprobuj ponownie: ";
+					}
+				}
+			}
+			doLoop = false;
+			break;
+		}
+		case 'M': {
+			bool doMainLoop = true;
+			bool doSecondLoop = true;
+			char key = 'I';
+			while (doMainLoop) {
+				movies->sortCollection(key);
+				this->showMovies();
+				doSecondLoop = true;
+				cout << "Wybierz sposob sortowania:\n(I) Id\n(R) Ocena\n(Q) Wyjscie\n\nWYBOR: ";
+				while (doSecondLoop) {
+					key = Visual::readChar();
+					if (key == 'Q') return;
+					else if (key == 'R' || key == 'I')
+						doSecondLoop = false;
+					else {
+						doSecondLoop = true;
+						cout << "Bledna komenda, sprobuj ponownie: ";
+					}
+				}
+			}
+			doLoop = false;
+			break;
+		}
+		case 'L': {
+			bool doMainLoop = true;
+			bool doSecondLoop = true;
+			char key = 'I';
+			lives->sortCollection(key);
+			while (doMainLoop) {
+				this->showLives();
+				doSecondLoop = true;
+				cout << "\n(Q) Wyjscie\n\nWYBOR: ";
+				while (doSecondLoop) {
+					key = Visual::readChar();
+					if (key == 'Q') return;
+					else {
+						doSecondLoop = true;
+						cout << "Bledna komenda, sprobuj ponownie: ";
+					}
+				}
+				doLoop = false;
+			}
+			break;
+		}
+		case 'Q': {
+			return;
+		}
+		default:{
+			cout << "Bledna komenda, sprobuj ponownie: ";
+			break;
+		}
+		}
 	}
-	case 'M': {
-		this->showMovies();
-		break;
-	}
-	case 'L': {
-		this->showLives();
-		break;
-	}
-	default:
-		break;
-	}
-	cout << "Dowolny klawisz aby kontynuowac... ";
-	_getch();  // FIXME
 }
 
 void MainMenu::showTvSeries() {
@@ -275,8 +342,6 @@ Series MainMenu::createSeries(int id) {
 	Visual::header("DODAJ NOWY SERIAL");
 	do {
 		cout << "Podaj tytul serialu: ";
-		cin.clear();
-		cin.ignore(numeric_limits < streamsize >::max(), '\n');
 		getline(cin, title);
 	} while (title.length() > 50);
 	do {
@@ -418,6 +483,11 @@ void MainMenu::editMovie() {
 		try {
 			id = stoi(choice);
 			doLoop = !(this->movies->exist(id));
+			if (!doLoop) {
+				Movie myMovie = createMovie(id);
+				this->movies->edit_object(myMovie);
+				tvSeries->save();
+			}
 		}
 		catch (...) {
 			doLoop = true;
@@ -425,9 +495,6 @@ void MainMenu::editMovie() {
 		if (doLoop) {
 			cout << "Taki serial nie istnieje w twojej kolekcji!\n";
 		}
-		Movie myMovie = createMovie(id);
-		this->movies->edit_object(myMovie);
-		tvSeries->save();
 	}
 }
 
@@ -443,6 +510,11 @@ void MainMenu::editLive() {
 		try {
 			id = stoi(choice);
 			doLoop = !(this->lives->exist(id));
+			if (!doLoop) {
+				Live myLive = createLive(id);
+				this->lives->edit_object(myLive);
+				tvSeries->save();
+			}
 		}
 		catch (...) {
 			doLoop = true;
@@ -450,11 +522,5 @@ void MainMenu::editLive() {
 		if (doLoop) {
 			cout << "Taki live nie istnieje w twojej kolekcji!\n";
 		}
-		Live myLive = createLive(id);
-		this->lives->edit_object(myLive);
-		tvSeries->save();
 	}
 }
-
-
-// ERROR CHECKING cin.fail();

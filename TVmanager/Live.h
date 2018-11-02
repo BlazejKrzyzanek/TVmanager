@@ -9,6 +9,7 @@ private:
 	int day;
 	int hour;
 public:
+	Live() {};
 	Live(int id, string title, bool favourite, int day, int hour) : TvObject(id, title, -1, favourite) {
 		this->day = day;
 		this->hour = hour;

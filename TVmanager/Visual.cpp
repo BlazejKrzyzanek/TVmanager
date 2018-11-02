@@ -13,7 +13,7 @@ void Visual::header(string title) {
 
 bool Visual::yesOrNot(string question) {
 	cout << question;
-	bool doLoop = 1;
+	bool doLoop = true;
 	while (doLoop) {
 		char choice = readChar();
 		switch (choice)
@@ -43,4 +43,22 @@ char Visual::readChar() {
 	string input;
 	getline(cin, input);
 	return toupper(input[0]);
+}
+
+int Visual::readInt(string question) {
+	int myInt;
+	bool doLoop = true;
+	string choice;
+	while (doLoop) {
+		cout << question;
+		getline(cin, choice);
+		try {
+			myInt = stoi(choice);
+			doLoop = false;
+		}
+		catch (...) {
+			doLoop = true;
+		}
+	}
+	return myInt;
 }

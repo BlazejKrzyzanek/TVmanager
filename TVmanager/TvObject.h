@@ -12,6 +12,7 @@ protected:
 	int rating;
 	bool favourite;
 public:
+	TvObject() {};
 	TvObject(int id, string title);
 	TvObject(int id, string title, bool favourite);
 	TvObject(int id, string title, int rating);
