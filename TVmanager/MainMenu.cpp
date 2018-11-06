@@ -239,17 +239,47 @@ void MainMenu::recommended() {
 				uniform_int_distribution<> distr1(0, a - 1);
 				cout << "Polecany serial na dzisiaj to: \n\t" << tvSeries->getObject(distr1(eng)).getTitle() << "\n";
 			}
+		}
+		catch (MyException e) {
+			cout << e.getMessage() << "\n";
+		}
+		try {
 			b = movies->getLength();
 			if (b <= 0)
-				throw MyException("Niestety, w twojej puli nie znaleziono filmow, ktore mozna by polecic\n");
+				throw MyException("\nNiestety, w twojej puli nie znaleziono filmow, ktore mozna by polecic\n");
 			else {
 				uniform_int_distribution<> distr2(0, b - 1);
-				cout << "Polecany film na dzisiaj to: \n\t" << movies->getObject(distr2(eng)).getTitle() << "\n";
+				cout << "\nPolecany film na dzisiaj to: \n\t" << movies->getObject(distr2(eng)).getTitle() << "\n";
+			}
+		}
+		catch (MyException e) {
+			cout << e.getMessage() << "\n";
+		}
+		try {
+			SYSTEMTIME time;
+			GetLocalTime(&time);
+			int weekday = time.wDayOfWeek;
+			int n = lives->getLength();
+			vector<int> ids;
+			for (int i = 0; i < n; i++) {
+				if (lives->getObject(i).getDay() == weekday) {
+					ids.push_back(lives->getObject(i).getId());
+				}
+			}
+			if (ids.size() <= 0) {
+				throw MyException("\nNiestety, w twojej puli nie znaleziono transmisji nadawanych dzisiaj\n");
+			}
+			else {
+				cout << "\nDzisiaj mozesz obejrzec transmisje na zywo takie jak:\n";
+				for (int i = 0; i < ids.size(); i++) {
+					cout << "\t" << lives->findObject(ids[i]).getTitle() << "\ o godzinie " << lives->findObject(ids[i]).getHour() << ":00\n";
+				}
 			}
 		}
 	catch (MyException e) {
 		cout << e.getMessage() << "\n";
 	}
+	cout << "\nDowolny klawisz aby kontynuowac... ";
 	_getch();
 }
 
@@ -365,12 +395,12 @@ void MainMenu::showMovies() {
 void MainMenu::showLives() {
 	Visual::header("TWOJA BAZA TRANSMISJI LIVE");
 	cout << setw(7) << "| ID |";
-	cout << setw(45) << "| TYTUL |";
+	cout << setw(50) << "| TYTUL |";
 	cout << setw(13) << "| ULUBIONY |";
 	cout << setw(20) << "| DZIEN |";
 	cout << setw(15) << "| GODZINA |";
 	cout << "\n" << line << "\n";
-	vector<int> width{ 7,45,13,20,15 };
+	vector<int> width{ 7,50,13,20,15 };
 	lives->show_all(width);
 }
 
@@ -382,7 +412,7 @@ Series MainMenu::createSeries(int id) {
 	do {
 		cout << "Podaj tytul serialu: ";
 		getline(cin, title);
-	} while (title.length() > 50);
+	} while (title.length() >= 50);
 	do {
 		rating = Visual::readInt("Podaj ocene serialu <1-10>: ");
 	} while (rating < 1 || rating > 10);
@@ -403,7 +433,7 @@ Movie MainMenu::createMovie(int id) {
 	do {
 	cout << "Podaj tytul filmu: ";
 	getline(cin, title);
-	} while (title.length() > 50);
+	} while (title.length() >= 50);
 	do {
 		rating = Visual::readInt("Podaj ocene filmu <1-10>: ");
 	} while (rating < 1 || rating > 10);
@@ -424,14 +454,14 @@ Live MainMenu::createLive(int id) {
 	do {
 	cout << "Podaj tytul live: ";
 	getline(cin, title);
-	} while (title.length() > 50);
+	} while (title.length() >= 50);
 	do {
 		day = Visual::readInt("Podaj dzien ktorego odbedzie sie transmisja (1 = poniedzialek, ..., 7 = niedziela): ");
 	} while (day < 1 || day > 7);
 	do {
 		hour = Visual::readInt("Podaj godzine o ktorej odbedzie sie transmisja (0-23): ");
 	} while (hour < 0 || hour > 23);
-	bool fav = Visual::yesOrNot("Czy to zalezy Ci na tym live? y/n: ");
+	bool fav = Visual::yesOrNot("Czy zalezy Ci na tym live? y/n: ");
 	Live live(id, title, fav, day, hour);
 	return live;
 }

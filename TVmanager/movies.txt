@@ -1,0 +1,13 @@
+0	Skazani na Shawshank	9	0	1
+1	Rodzice Chrzestni	9	0	2
+2	Dwunastu apostolow	8	0	5
+3	Wladca pierscieni: powrot krola	8	0	7
+4	Gwiezdne wojny: Dwie wieze	8	1	13
+5	Macierz	7	1	18
+6	Piraci z Karaibow: Rajskie wakacje	8	0	247
+7	La la la la la	6	1	233
+8	Harry Potter: Na drodze gniewu	8	0	205
+9	Python: Django	9	0	61
+10	Wilk z ul. Sciana	5	0	153
+11	Lowca iOSow	7	1	152
+12	Terminator	3	0	225

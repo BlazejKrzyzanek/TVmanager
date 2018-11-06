@@ -62,6 +62,7 @@ vector<string> Live::showFields() {
 		break;
 	case 7:
 		day = "niedziela";
+		break;
 	default:
 		day = "niezdefiniowany";
 		break;

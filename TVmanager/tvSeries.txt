@@ -1,23 +1,7 @@
-13	dfs	2	0	222
-14	trolololo	3	1	32
-15	super nowoczesny serial	4	0	4
-16	qwer	2	1	120
-17	aaaaa	10	0	5
-18	123	3	0	231
-19	sad	2	0	3
-20	23	2	0	312
-22	ret	5	1	123
-24	3	4	0	345
-26	312	3	0	23
-29	seefssdf	5	0	23
-35	rampampam	2	1	56
-38	qwert	1	0	4
-39	nowy tytul serialu	4	1	1
-41	edytowalem ten serial wlasnie	10	0	233333
-42	testowy serial ktory teraz dodalem	10	1	120
-43	nowy serial adsfdsf	1	0	123213
-44	to jest nowy serial trolololool	7	0	120
-46	ads	2	0	2
-47	asdsad	3	0	132
-48	serial	4	1	34
-49	sdfsd	3	0	2
+0	Moda na sukces	6	0	20000000
+1	Gra o Tron	9	1	70
+2	Mr Robot	9	1	30
+3	Breaking Bad	8	0	55
+4	Domek z kart	7	0	73
+5	Latajacy cyrk Monty Javy	10	1	45
+6	Planeta Ziemia II	8	1	6
