@@ -7,3 +7,4 @@
 11	transmisja	0	7	22
 12	ty45	0	3	6
 13	rwg	1	7	6
+14	tytyty	0	6	13

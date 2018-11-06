@@ -6,6 +6,7 @@
 #include "Live.h"
 #include "TvCollection.h"
 #include "Visual.h"
+#include "MyException.h"
 #include <iostream>
 #include <limits>
 #include <string>
@@ -13,6 +14,7 @@
 #include <cstdlib> 
 #include <conio.h>
 #include <typeinfo>
+#include <random>
 
 using namespace std;
 
@@ -40,41 +42,54 @@ private:
 	Series createSeries(int id);
 	Movie createMovie(int id);
 	Live createLive(int id);
-	void editSeries();
-	void editMovie();
-	void editLive();
+	bool editSeries();
+	bool editMovie();
+	bool editLive();
 	template <class T> 
-	void removeTvObject(string objName, TvCollection<T>* tvCollection) {
-		int id;
-		string choice;
-		bool doLoop = true;
+	bool removeTvObject(string objName, TvCollection<T>* tvCollection);
+};
 
-		if (typeid(T) == typeid(Series)) {
-			this->showTvSeries();
-		}
-		else if (typeid(T) == typeid(Movie)) {
-			this->showMovies();
-		}
-		else {
-			this->showLives();
-		}
+template <class T>
+bool MainMenu::removeTvObject(string objName, TvCollection<T>* tvCollection) {
+	int id;
+	string choice;
+	bool doLoop = true;
 
-		while (doLoop) {
-			cout << "\nKtory "<< objName << "  chcesz usunac? Podaj nr ID, (Q) aby anulowac: ";
-			getline(cin, choice);
-			if (toupper(choice[0]) == 'Q') return;
-			try {
-				id = stoi(choice);
-				doLoop = !(tvCollection->exist(id));
-			}
-			catch (...) {
-				doLoop = true;
-			}
-			if (doLoop) {
-				cout << "Taki " << objName << " nie istnieje w twojej kolekcji!\n";
-			}
+	if (typeid(T) == typeid(Series)) {
+		this->showTvSeries();
+	}
+	else if (typeid(T) == typeid(Movie)) {
+		this->showMovies();
+	}
+	else {
+		this->showLives();
+	}
+
+	while (doLoop) {
+		cout << "\nKtory " << objName << "  chcesz usunac? Podaj nr ID, (Q) aby anulowac: ";
+		getline(cin, choice);
+		if (toupper(choice[0]) == 'Q') return false;
+		try {
+			id = stoi(choice);
+			doLoop = !(tvCollection->exist(id));
 		}
-		*tvCollection -= tvCollection->findObject(id);
-	};
+		catch (const out_of_range& oor) {
+			cout << "Liczba wykracza poza zakres!\n";
+			doLoop = true;
+		}
+		catch (const invalid_argument& ia) {
+			cout << "Niepoprawne argumenty\n";
+			doLoop = true;
+		}
+		catch (...) {
+			cout << "Wystapil nieoczekiwany blad, sproboj ponownie\n";
+			doLoop = true;
+		}
+		if (doLoop) {
+			cout << "Taki " << objName << " nie istnieje w twojej kolekcji!\n";
+		}
+	}
+	*tvCollection -= tvCollection->findObject(id);
+	return true;
 };
 #endif // !MainMenu_h

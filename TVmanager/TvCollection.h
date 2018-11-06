@@ -35,11 +35,11 @@ public:
 		}
 		return *this;
 	}
-
 	bool remove_object(int id);
 	void show_all(vector<int> textFields);
 	bool exist(int id);
 	T findObject(int id);
+	T getObject(int pos);
 	void edit_object(T obj);
 	int getLength();
 	void sortCollection(char choice);
@@ -135,6 +135,11 @@ T TvCollection<T>::findObject(int id) {
 	}
 	T *p = NULL;
 	return *p;
+}
+
+template<class T>
+T TvCollection<T>::getObject(int i) {
+	return tvObjects[i];
 }
 
 template<class T>

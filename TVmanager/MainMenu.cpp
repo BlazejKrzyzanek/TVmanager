@@ -121,23 +121,32 @@ void MainMenu::delete_tv() {
 		char choice = Visual::readChar();
 		switch (choice) {
 		case 'S': {
+			tvSeries->sortCollection('I');
 			while(state){
-				this->removeTvObject<Series>("serial", tvSeries);
-				state = Visual::yesOrNot("\nCzy chcesz usunac kolejny serial? y/n: ");
+				if (this->removeTvObject<Series>("serial", tvSeries))
+					state = Visual::yesOrNot("\nCzy chcesz usunac kolejny serial? y/n: ");
+				else
+					break;
 			}
 			break;
 		}
 		case 'M': {
+			movies->sortCollection('I');
 			while (state) {
-				this->removeTvObject<Movie>("film", movies);
-				state = Visual::yesOrNot("\nCzy chcesz usunac kolejny film? y/n: ");
+				if(this->removeTvObject<Movie>("film", movies))
+					state = Visual::yesOrNot("\nCzy chcesz usunac kolejny film? y/n: ");
+				else
+					break;
 			}
 			break;
 		}
 		case 'L': {
+			lives->sortCollection('I');
 			while (state) {
-				this->removeTvObject<Live>("live", lives);
-				state = Visual::yesOrNot("\nCzy chcesz usunac kolejna transmisje? y/n: ");
+				if(this->removeTvObject<Live>("live", lives))
+					state = Visual::yesOrNot("\nCzy chcesz usunac kolejna transmisje? y/n: ");
+				else
+					break;
 			}
 			break;
 		}
@@ -165,24 +174,31 @@ void MainMenu::edit_tv() {
 		case 'S': {
 			while(state){
 				tvSeries->sortCollection('I');
-				this->editSeries();
-				state = Visual::yesOrNot("\nCzy chcesz edytowac kolejny serial? y/n: ");
+				if (this->editSeries())
+					state = Visual::yesOrNot("\nCzy chcesz edytowac kolejny serial? y/n: ");
+				else
+					break;
+				
 			}
 			break;
 		}
 		case 'M': {
 			while (state) {
 				movies->sortCollection('I');
-				this->editMovie();
-				state = Visual::yesOrNot("\nCzy chcesz edytowac kolejny film? y/n: ");
+				if(this->editMovie())
+					state = Visual::yesOrNot("\nCzy chcesz edytowac kolejny film? y/n: ");
+				else
+					break;
 			}
 			break;
 		}
 		case 'L': {
 			while (state) {
 				movies->sortCollection('I');
-				this->editLive();
-				state = Visual::yesOrNot("\nCzy chcesz edytowac kolejny live? y/n: ");
+				if(this->editLive())
+					state = Visual::yesOrNot("\nCzy chcesz edytowac kolejny live? y/n: ");
+				else
+					break;
 			}
 			break;
 		}
@@ -211,7 +227,30 @@ void MainMenu::statistics() {
 }
 
 void MainMenu::recommended() {
-	cout << "Rekomendacje" << "\n";
+	Visual::header("REKOMENDACJE");
+	int a, b;
+		random_device rd;
+		mt19937 eng(rd());	// Losowanie
+		try {
+			a = tvSeries->getLength();
+			if (a <= 0)
+				throw MyException("Niestety, w twojej puli nie znaleziono seriali, ktore mozna by polecic\n");
+			else {
+				uniform_int_distribution<> distr1(0, a - 1);
+				cout << "Polecany serial na dzisiaj to: \n\t" << tvSeries->getObject(distr1(eng)).getTitle() << "\n";
+			}
+			b = movies->getLength();
+			if (b <= 0)
+				throw MyException("Niestety, w twojej puli nie znaleziono filmow, ktore mozna by polecic\n");
+			else {
+				uniform_int_distribution<> distr2(0, b - 1);
+				cout << "Polecany film na dzisiaj to: \n\t" << movies->getObject(distr2(eng)).getTitle() << "\n";
+			}
+		}
+	catch (MyException e) {
+		cout << e.getMessage() << "\n";
+	}
+	_getch();
 }
 
 void MainMenu::show_all() {
@@ -345,28 +384,12 @@ Series MainMenu::createSeries(int id) {
 		getline(cin, title);
 	} while (title.length() > 50);
 	do {
-		cout << "Podaj ocene serialu <1-10>: ";
-		cin >> rating;
-		cin.clear();
-		cin.ignore(numeric_limits < streamsize >::max(), '\n');
+		rating = Visual::readInt("Podaj ocene serialu <1-10>: ");
 	} while (rating < 1 || rating > 10);
-	cout << "Czy to Twoj ulubiony serial? y/n: ";
-	char tmp;
-	bool fav;
-	cin >> tmp;
-	cin.clear();
-	if (toupper(tmp) == 'Y') {
-		fav = true;
-	}
-	else {
-		fav = false;
-	}
+	bool fav = Visual::yesOrNot("Czy to twoj ulubiony serial? y/n: ");
 	do {
-		cout << "Ile odcinkow ma ten serial?: ";
-		cin >> episodes;
-		cin.clear();
-		cin.ignore(numeric_limits < streamsize >::max(), '\n');
-	} while (episodes < 0);
+		episodes = Visual::readInt("Ile odcinkow ma ten serial?: ");
+	} while (episodes <= 0);
 
 	Series series(id, title, rating, fav, episodes);
 	return series;
@@ -377,33 +400,17 @@ Movie MainMenu::createMovie(int id) {
 	int rating;
 	int imdb;
 	Visual::header("DODAJ NOWY FILM");
+	do {
 	cout << "Podaj tytul filmu: ";
-	cin.clear();
-	cin.ignore(numeric_limits < streamsize >::max(), '\n');
 	getline(cin, title);
+	} while (title.length() > 50);
 	do {
-		cout << "Podaj ocene filmu <1-10>: ";
-		cin >> rating;
-		cin.clear();
-		cin.ignore(numeric_limits < streamsize >::max(), '\n');
+		rating = Visual::readInt("Podaj ocene filmu <1-10>: ");
 	} while (rating < 1 || rating > 10);
-	cout << "Czy to Twoj ulubiony film? y/n: ";
-	char tmp;
-	bool fav;
-	cin >> tmp;
-	cin.clear();
-	if (toupper(tmp) == 'Y') {
-		fav = true;
-	}
-	else {
-		fav = false;
-	}
+	bool fav = Visual::yesOrNot("Czy to twoj ulubiony film? y/n: ");
 	do {
-		cout << "Podaj miejsce w rankingu IMDb: ";
-		cin >> imdb;
-		cin.clear();
-		cin.ignore(numeric_limits < streamsize >::max(), '\n');
-	} while (imdb < 0);
+		imdb = Visual::readInt("Podaj miejsce w rankingu IMDb: ");
+	} while (imdb <= 0);
 
 	Movie movie(id, title, rating, fav, imdb);
 	return movie;
@@ -414,39 +421,22 @@ Live MainMenu::createLive(int id) {
 	int day;
 	int hour;
 	Visual::header("DODAJ NOWY LIVE");
-	cout << "Podaj tytul live: ";
-	cin.clear();
-	cin.ignore(numeric_limits < streamsize >::max(), '\n');
-	getline(cin, title);
 	do {
-		cout << "Podaj dzien ktorego odbedzie sie transmisja (1 = poniedzialek, ..., 7 = niedziela): ";
-		cin >> day;
-		cin.clear();
-		cin.ignore(numeric_limits < streamsize >::max(), '\n');
+	cout << "Podaj tytul live: ";
+	getline(cin, title);
+	} while (title.length() > 50);
+	do {
+		day = Visual::readInt("Podaj dzien ktorego odbedzie sie transmisja (1 = poniedzialek, ..., 7 = niedziela): ");
 	} while (day < 1 || day > 7);
 	do {
-		cout << "Podaj godzine o ktorej odbedzie sie transmisja (0-23): ";
-		cin >> hour;
-		cin.clear();
-		cin.ignore(numeric_limits < streamsize >::max(), '\n');
+		hour = Visual::readInt("Podaj godzine o ktorej odbedzie sie transmisja (0-23): ");
 	} while (hour < 0 || hour > 23);
-	cout << "Czy zalezy ci na tym live? y/n: ";
-	char tmp;
-	bool fav;
-	cin >> tmp;
-	cin.clear();
-	if (toupper(tmp) == 'Y') {
-		fav = true;
-	}
-	else {
-		fav = false;
-	}
+	bool fav = Visual::yesOrNot("Czy to zalezy Ci na tym live? y/n: ");
 	Live live(id, title, fav, day, hour);
 	return live;
 }
 
-// MERGE THEESE 
-void MainMenu::editSeries() {
+bool MainMenu::editSeries() {
 	this->showTvSeries();
 	string choice;
 	int id;
@@ -454,24 +444,35 @@ void MainMenu::editSeries() {
 	while(doLoop) {
 		cout << "\nKtory serial chcesz edytowac? Podaj nr ID, (Q) aby anulowac: ";
 		getline(cin, choice);
-		if (toupper(choice[0]) == 'Q') return;
+		if (toupper(choice[0]) == 'Q') return false;
 		try {
 			id = stoi(choice);
 			doLoop = !(this->tvSeries->exist(id));
+			if (!doLoop) {
+				Series mySeries = createSeries(id);
+				this->tvSeries->edit_object(mySeries);
+				tvSeries->save();
+			}
+		}
+		catch (const out_of_range& oor) {
+			cout << "Liczba wykracza poza zakres!\n";
+			doLoop = true;
+		}
+		catch (const invalid_argument& ia) {
+			cout << "Niepoprawne argumenty\n";
+			doLoop = true;
 		}
 		catch (...) {
+			cout << "Wystapil nieoczekiwany blad, sproboj ponownie\n";
 			doLoop = true;
 		}
 		if (doLoop) {
 			cout << "Taki serial nie istnieje w twojej kolekcji!\n";
 		}
-		Series mySeries = createSeries(id);
-		this->tvSeries->edit_object(mySeries);
-		tvSeries->save();
-	}
+	} return true;
 }
 
-void MainMenu::editMovie() {
+bool MainMenu::editMovie() {
 	this->showMovies();
 	string choice;
 	int id;
@@ -479,7 +480,7 @@ void MainMenu::editMovie() {
 	while (doLoop) {
 		cout << "\nKtory film chcesz edytowac? Podaj nr ID, (Q) aby anulowac: ";
 		getline(cin, choice);
-		if (toupper(choice[0]) == 'Q') return;
+		if (toupper(choice[0]) == 'Q') return false;
 		try {
 			id = stoi(choice);
 			doLoop = !(this->movies->exist(id));
@@ -489,16 +490,26 @@ void MainMenu::editMovie() {
 				tvSeries->save();
 			}
 		}
+		catch (const out_of_range& oor) {
+			cout << "Liczba wykracza poza zakres!\n";
+			doLoop = true;
+		}
+		catch (const invalid_argument& ia) {
+			cout << "Niepoprawne argumenty\n";
+			doLoop = true;
+		}
 		catch (...) {
+			cout << "Wystapil nieoczekiwany blad, sproboj ponownie\n";
 			doLoop = true;
 		}
 		if (doLoop) {
 			cout << "Taki serial nie istnieje w twojej kolekcji!\n";
 		}
 	}
+	return true;
 }
 
-void MainMenu::editLive() {
+bool MainMenu::editLive() {
 	this->showLives();
 	string choice;
 	int id;
@@ -506,7 +517,7 @@ void MainMenu::editLive() {
 	while (doLoop) {
 		cout << "\nKtory live chcesz edytowac? Podaj nr ID, (Q) aby anulowac: ";
 		getline(cin, choice);
-		if (toupper(choice[0]) == 'Q') return;
+		if (toupper(choice[0]) == 'Q') return false;
 		try {
 			id = stoi(choice);
 			doLoop = !(this->lives->exist(id));
@@ -516,11 +527,21 @@ void MainMenu::editLive() {
 				tvSeries->save();
 			}
 		}
+		catch (const out_of_range& oor) {
+			cout << "Liczba wykracza poza zakres!\n";
+			doLoop = true;
+		}
+		catch (const invalid_argument& ia) {
+			cout << "Niepoprawne argumenty\n";
+			doLoop = true;
+		}
 		catch (...) {
+			cout << "Wystapil nieoczekiwany blad, sproboj ponownie\n";
 			doLoop = true;
 		}
 		if (doLoop) {
 			cout << "Taki live nie istnieje w twojej kolekcji!\n";
 		}
 	}
+	return true;
 }

@@ -1,4 +1,3 @@
-6	dddddddddddddddddd	4	1	32
 13	dfs	2	0	222
 14	trolololo	3	1	32
 15	super nowoczesny serial	4	0	4
@@ -10,8 +9,8 @@
 22	ret	5	1	123
 24	3	4	0	345
 26	312	3	0	23
-29	2	3	0	12312
-35	ewqrewrer	2	0	1212
+29	seefssdf	5	0	23
+35	rampampam	2	1	56
 38	qwert	1	0	4
 39	nowy tytul serialu	4	1	1
 41	edytowalem ten serial wlasnie	10	0	233333
@@ -20,3 +19,5 @@
 44	to jest nowy serial trolololool	7	0	120
 46	ads	2	0	2
 47	asdsad	3	0	132
+48	serial	4	1	34
+49	sdfsd	3	0	2
