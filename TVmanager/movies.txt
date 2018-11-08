@@ -1,4 +1,4 @@
-0	Skazani na Shawshank	9	0	1
+0	Skazani na szol	5	0	4567
 1	Rodzice Chrzestni	9	0	2
 2	Dwunastu apostolow	8	0	5
 3	Wladca pierscieni: powrot krola	8	0	7

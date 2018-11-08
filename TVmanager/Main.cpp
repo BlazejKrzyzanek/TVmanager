@@ -1,4 +1,4 @@
-// TVmanager.cpp: Definiuje punkt wejścia dla aplikacji konsolowej.
+// Main.cpp: Definiuje punkt wejścia dla aplikacji konsolowej.
 //
 
 #include "stdafx.h"

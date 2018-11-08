@@ -5,3 +5,4 @@
 4	Domek z kart	7	0	73
 5	Latajacy cyrk Monty Javy	10	1	45
 6	Planeta Ziemia II	8	1	6
+7	nowy serial	3	1	54
